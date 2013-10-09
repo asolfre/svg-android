@@ -617,14 +617,15 @@ public class SVGParser {
 			return defaultValue;
 		} else if (str.endsWith("px")) {
 			str = str.substring(0, str.length() - 2);
-		} else if (str.endsWith("%")) {
+		} else if (str.endsWith("pt")) {//Added to prevent exception when units are expressed in pt
+			str = str.substring(0, str.length() - 2);//TODO investigate if the returned value needs to be a multiple of the px value www.w3.org/TR/SVG/coords.html 7.10 units
+		} else if (str.endsWith("%")) {//TODO Add rest of units (pc, cm, mm, in...)
 			str = str.substring(0, str.length() - 1);
 			return Float.parseFloat(str) / 100;
 		}
 		// Log.d(TAG, "Float parsing '" + name + "=" + v + "'");
 		return Float.parseFloat(str);
 	}
-
 	private static class NumberParse {
 		private ArrayList<Float> numbers;
 		private int nextCmd;
